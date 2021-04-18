@@ -49,7 +49,7 @@
   .column-body {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 10rem);
+    height: calc(100vh - 12rem);
     gap: 1rem;
     padding: 0.5em;
   }
