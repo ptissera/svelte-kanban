@@ -1,7 +1,7 @@
 <script>
     export let card;
 </script>
-<div class="issue-card shadow-soft border-light">
+<div class="issue-card shadow-soft border-light" draggable="true">
     <div class="issue-card-header border-light">{card.name}<span class="issue-severity">{card.severity}</span></div>
     <div class="issue-card-body">
         <b>Description: </b>
@@ -11,8 +11,14 @@
 </div>
 <style>
   .issue-card {
-	border-radius: .6em;
+    display: flex;
+    flex-direction: column;
+	 border-radius: .6em;
   }
+  .issue-card:hover {
+    box-shadow: 6px 6px 12px #afdd5a, -6px -6px 12px #dbe6c8 !important;
+  }
+  
 
   legend {
       font-size: .8rem;
