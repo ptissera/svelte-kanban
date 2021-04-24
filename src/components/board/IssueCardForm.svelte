@@ -1,9 +1,13 @@
 <script>
+  import { createEventDispatcher } from 'svelte';
   import Modal from "./../shared/Modal.svelte";
   import {columns} from "../../stores/cards-store";
+  import { v4 as uuidv4 } from "uuid";
+  
+  const dispatch = createEventDispatcher();
   let showModal = false;
-
-  let issue = {
+  let ITEM = {
+    id: null,
     name: "",
     description: "",
     author: "",
@@ -13,15 +17,21 @@
     severity: 1,
   };
 
-  const create = () => {
-    issue.created = Date.now();
-    $columns[0].cards.push(issue);
-    columns.update(() => $columns);
+  export let item = {...ITEM};
+
+  const clean = () => {
+    item = {...ITEM};
     showModal = false;
-  }
+  };
+  const onSubmitHandler = () => {
+    dispatch("submit", {
+      item,
+    });
+    clean();
+  };
 
   const cancel = () => {
-    showModal = false;
+    clean();
   }
 </script>
 
@@ -35,14 +45,15 @@
       <h2>New issue</h2>
     </div>
     <div slot="body">
-      <form action="#">
+      <form on:submit|preventDefault="{onSubmitHandler}">
         <div class="form-group">
           <label>Name</label>
           <input
             type="text"
             class="form-control"
-            bind:value={issue.name}
+            bind:value={item.name}
             id="name"
+            required
             placeholder="Name"
           />
         </div>
@@ -51,8 +62,9 @@
           <input
             type="text"
             class="form-control"
-            bind:value={issue.description}
+            bind:value={item.description}
             id="description"
+            required
             placeholder="Description"
           />
         </div>
@@ -61,64 +73,71 @@
           <input
             type="text"
             class="form-control"
-            bind:value={issue.author}
+            bind:value={item.author}
             id="author"
+            required
             placeholder="Author"
           />
         </div>
         <div class="form-group">
+          <!-- svelte-ignore a11y-label-has-associated-control -->
           <label>Severity</label>
           <div class="form-group-severity">
             <div class="form-check">
               <input
-                class="form-check-input"
                 type="radio"
-                bind:group={issue.severity}
+                bind:group={item.severity}
+                id="severity1"
+                class="form-check-input"
                 value={1}
               />
-              <label class="form-check-label" for="1">1</label>
+              <label class="form-check-label" for="severity1">1</label>
             </div>
             <div class="form-check">
               <input
-                class="form-check-input"
                 type="radio"
-                bind:group={issue.severity}
+                id="severity2"
+                class="form-check-input"
+                bind:group={item.severity}
                 value={2}
               />
-              <label class="form-check-label" for="2">2</label>
+              <label class="form-check-label" for="severity2">2</label>
             </div>
             <div class="form-check">
               <input
-                class="form-check-input"
                 type="radio"
-                bind:group={issue.severity}
+                id="severity3"
+                class="form-check-input"
+                bind:group={item.severity}
                 value={3}
               />
-              <label class="form-check-label" for="3">3</label>
+              <label class="form-check-label" for="severity3">3</label>
             </div>
             <div class="form-check">
               <input
-                class="form-check-input"
                 type="radio"
-                bind:group={issue.severity}
+                id="severity4"
+                class="form-check-input"
+                bind:group={item.severity}
                 value={4}
               />
-              <label class="form-check-label" for="4">4</label>
+              <label class="form-check-label" for="severity4">4</label>
             </div>
             <div class="form-check">
               <input
-                class="form-check-input"
                 type="radio"
-                bind:group={issue.severity}
+                id="severity5"
+                class="form-check-input"
+                bind:group={item.severity}
                 value={5}
               />
-              <label class="form-check-label" for="5">5</label>
+              <label class="form-check-label" for="severity5">5</label>
             </div>
           </div>
         </div>
         <br />
         <div class="button-content">
-          <button on:click={create} class="btn btn-primary">Create</button>
+          <button class="btn btn-primary">Create</button>
           <button on:click={cancel} class="btn btn-default">Cancel</button>
         </div>
       </form>

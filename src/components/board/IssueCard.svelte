@@ -2,7 +2,7 @@
     export let card;
 </script>
 <div class="issue-card shadow-soft border-light" draggable="true">
-    <div class="issue-card-header border-light">{card.name}<span class="issue-severity">{card.severity}</span></div>
+    <div class="issue-card-header border-light">{card.name}<span class="issue-severity severity{card.severity}" >{card.severity}</span></div>
     <div class="issue-card-body">
         <b>Description: </b>
         {card.description}
@@ -19,15 +19,30 @@
     box-shadow: 6px 6px 12px #afdd5a, -6px -6px 12px #dbe6c8 !important;
   }
   
-
-  legend {
-      font-size: .8rem;
-      font-weight: bold;
+  .severity1 {
+    background-color: green;
+    color: yellow;
   }
 
+  .severity2 {
+    background-color: greenyellow;
+  }
+
+  .severity3 {
+    background-color: yellow;
+  }
+
+  .severity4 {
+    background-color: orange;
+  }
+
+  .severity5 {
+    background-color: red;
+  }
+  
   .issue-card-header {
 	padding: .3em 0;
-	border-bottom: 1px solid;
+	   border-bottom: 1px solid;
     display: block;
     overflow: hidden;
     background-color: var(--gray-400);
@@ -37,16 +52,16 @@
   .issue-severity {
     float: right;
     border: 1px solid var(--gray-500);
-    background-color: var(--gray-500);
-    top: -0px;
-    right: -2px;
-    padding: .1em .5em;
-    border-radius: .8em 0 0 .8em;
+    top: 4px;
+    right: 4px;
+    padding: 0 .3em;
+    border-radius: 50px;
     position: relative;
+    font-size: .7rem;
   }
   .issue-card-footer {
     border-top: 1px solid;
-    font-size: .8rem;
+    font-size: .7rem;
     padding: .5em;
     display: flex;
     justify-content: space-between;

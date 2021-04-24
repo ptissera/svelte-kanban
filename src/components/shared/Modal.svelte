@@ -60,7 +60,7 @@
 	.modal {
 		position: absolute;
 		left: 50%;
-		top: 18em;
+		top: 19em;
 		width: calc(100vw - 4em);
 		max-width: 32em;
 		max-height: calc(100vh - 4em);
@@ -73,9 +73,5 @@
         flex-direction: column;
         height: fit-content;
         border-radius: 1em;
-	}
-
-	button {
-		display: block;
 	}
 </style>

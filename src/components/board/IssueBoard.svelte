@@ -1,13 +1,46 @@
 <script>
+  import { v4 as uuidv4 } from "uuid";
+	import Noty from "noty";
+  import "noty/lib/noty.css";
+	import "noty/lib/themes/sunset.css";
   import {columns} from "../../stores/cards-store";
   import { flip } from "svelte/animate";
   import IssueCard from "./IssueCard.svelte";
+  import IssueCardForm from "./IssueCardForm.svelte";
   let hoveringOverColumn;
 
   function dragStart(event, columnIndex, cardIndex) {
     const data = { columnIndex, cardIndex };
     event.dataTransfer.setData("text/plain", JSON.stringify(data));
   }
+
+  const onSubmitHandler = (event) => {
+		const { item } = event.detail;
+		if (!item.id) {
+			const newItem = { ...item, id: uuidv4() };
+			item.created = Date.now();
+      $columns[0].cards.push(item);
+		} else {
+			//const index = products.findIndex(({ id }) => id === product.id);
+			//products[index] = product;
+		}
+    columns.update(() => $columns);
+		new Noty({
+			theme: "sunset",
+			type: "success",
+			timeout: 3000,
+			text: `Issue ${item.id ? "updated" : "created"} successfully`,
+		}).show();
+	};
+
+  let itemEdit = {id: null,
+    name: "",
+    description: "",
+    author: "",
+    created: "",
+    updated: "",
+    comments: [],
+    severity: 1,};
 
   function drop(event, columnIndex) {
     event.preventDefault();
@@ -19,6 +52,10 @@
     hoveringOverColumn = null;
   }
 </script>
+  <div class="d-flex justify-content-end pr-5 pt-2">
+    <IssueCardForm item={itemEdit} on:submit={onSubmitHandler}/>
+  </div> 
+  
   <div class="main-container">
     {#each $columns as column, columnIndex (column.name)}
       <div animate:flip  class="column card bg-primary shadow-soft border-light"
@@ -33,7 +70,7 @@
         >
           {#each column.cards as card, cardIndex (card)}
             <div class="item" animate:flip on:dragstart={(event) => dragStart(event, columnIndex, cardIndex)}>
-              <IssueCard {card} />
+              <IssueCard {card}/>
             </div>
           {/each}
         </div>
@@ -49,7 +86,7 @@
   .column-body {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 12rem);
+    height: calc(100vh - 14rem);
     gap: 1rem;
     padding: 0.5em;
   }
